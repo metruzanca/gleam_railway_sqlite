@@ -1,13 +1,12 @@
-FROM erlang:27.1.1.0-alpine AS build
-COPY --from=ghcr.io/gleam-lang/gleam:v1.8.0-erlang-alpine /bin/gleam /bin/gleam
-COPY . /app/
-RUN cd /app && gleam export erlang-shipment
+FROM ghcr.io/gleam-lang/gleam:v1.5.1-erlang-alpine
 
-FROM erlang:27.1.1.0-alpine
-RUN \
-  addgroup --system webapp && \
-  adduser --system webapp -g webapp
-COPY --from=build /app/build/erlang-shipment /app
+COPY . /build/
+
+RUN cd /build \
+    && gleam export erlang-shipment \
+    && mv build/erlang-shipment /app \
+    && rm -rf /build
+
 WORKDIR /app
 ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["run"]
