@@ -1,4 +1,4 @@
-FROM ghcr.io/gleam-lang/gleam:v1.5.1-erlang-alpine
+FROM ghcr.io/gleam-lang/gleam:v1.8.0-erlang-alpine
 
 COPY . /build/
 
